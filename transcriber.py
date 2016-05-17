@@ -24,3 +24,14 @@ driver.get('https://web.enavi-ts.net/cs-staff-rks/Staff/month/monthwork.aspx');
 
 timesheet = driver.find_element_by_id('TableTimesheet')
 days = timesheet.find_elements_by_tag_name('tr')
+
+columns = { 'date': 1, 'status': 4, 'attend': 6, 'begin': 7, 'end': 8, 'break': 9, 'basic': 10, 'extra': 11 }
+enavi_list = []
+cells_by_day = [day.find_elements_by_tag_name('td') for day in days]
+for day_cells in cells_by_day:
+  date = day_cells[columns['date']].text
+  day = {}
+  [day.update({ k: day_cells[v].text}) for k, v in columns.items()]
+
+  if any([day['status'] == s for s in ['承認済', '依頼中']]):
+    enavi_list.append({ date: day })
