@@ -1,6 +1,7 @@
 {
   "e-navi": {
     "companyId": "COMPANY_ID",
+    "urlDir": "URL_DIR",
     "staffNo": "STAFF_NO",
     "password": "PASSWORD"
   }
