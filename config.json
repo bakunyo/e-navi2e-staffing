@@ -4,5 +4,11 @@
     "urlDir": "URL_DIR",
     "staffNo": "STAFF_NO",
     "password": "PASSWORD"
+  },
+  "e-staffing": {
+    "loginUrl": "LOGIN_URL",
+    "companyId": "COMPANY_ID",
+    "userId": "USER_ID",
+    "password": "PASSWORD"
   }
 }
