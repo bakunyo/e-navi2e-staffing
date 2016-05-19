@@ -1,5 +1,4 @@
 import json
-from IPython import embed
 from selenium import webdriver
 
 config = json.load(open('config.json', 'r'))
