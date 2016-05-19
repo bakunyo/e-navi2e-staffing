@@ -30,8 +30,11 @@ enavi_list = []
 cells_by_day = [day.find_elements_by_tag_name('td') for day in days]
 for day_cells in cells_by_day:
   date = day_cells[columns['date']].text
+  if date == '日付': continue
+
+  key = int(date.split('/')[1])
   day = {}
   [day.update({ k: day_cells[v].text}) for k, v in columns.items()]
 
   if any([day['status'] == s for s in ['承認済', '依頼中']]):
-    enavi_list.append({ date: day })
+    enavi_list.append({ 'date': key, 'time': day })
