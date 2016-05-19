@@ -6,3 +6,11 @@ Transcribe from e-navi to e-staffing automatically
 ```
 pip install selenium
 ```
+
+## Setup
+Setup `config.json` as your environment
+
+## Usage
+```
+python transcriber.py
+```
