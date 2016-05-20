@@ -5,6 +5,7 @@ class ENavi:
     self.url_dir = config['urlDir']
     self.staff_no = config['staffNo']
     self.password = config['password']
+    self.columns = { 'date': 1, 'status': 4, 'attend': 6, 'begin': 7, 'end': 8, 'break': 9, 'basic': 10, 'extra': 11 }
 
   def login_url(self):
     url = 'https://www.enavi-ts.net/ts-h-staff/Staff/login.aspx'
@@ -33,16 +34,15 @@ class ENavi:
     self.login()
     self.move_monthly_page()
 
-    columns = { 'date': 1, 'status': 4, 'attend': 6, 'begin': 7, 'end': 8, 'break': 9, 'basic': 10, 'extra': 11 }
     enavi_list = []
 
     for day_cells in self.cells_by_day():
-      date = day_cells[columns['date']].text
+      date = day_cells[self.columns['date']].text
       if date == '日付': continue
 
       key = int(date.split('/')[1])
       day = {}
-      [day.update({ k: day_cells[v].text}) for k, v in columns.items()]
+      [day.update({ k: day_cells[v].text}) for k, v in self.columns.items()]
 
       if any([day['status'] == s for s in ['承認済', '依頼中']]):
         enavi_list.append({ 'date': key, 'time': day })
