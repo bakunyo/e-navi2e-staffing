@@ -41,10 +41,14 @@ class ENavi:
       if date == '日付': continue
 
       key = int(date.split('/')[1])
-      day = {}
-      [day.update({ k: day_cells[v].text}) for k, v in self.columns.items()]
+      day = self__day_info(day_cells)
 
       if any([day['status'] == s for s in ['承認済', '依頼中']]):
         enavi_list.append({ 'date': key, 'time': day })
 
     return enavi_list
+
+  def __day_info(self, day_cells):
+    day = {}
+    return [day.update({ k: day_cells[v].text}) for k, v in self.columns.items()]
+    
