@@ -28,7 +28,7 @@ class EStaffing:
 
       days = self.__get_days() # half of month
 
-      day = days[d] if d < 16 else days[d - 15]
+      day = days[d] if self.half_now == 'early' else days[d - 15]
       day_str = str(d)
 
       # 既に申請済ならパス
