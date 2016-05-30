@@ -1,4 +1,7 @@
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class EStaffing:
   def __init__(self, driver, config):
@@ -22,7 +25,8 @@ class EStaffing:
       # 上旬・下旬のページ遷移
       if h != self.half_now:
         self.__move_to_half_page(h)
-        days = self.__get_days() # half of month
+
+      days = self.__get_days() # half of month
 
       day = days[d] if d < 16 else days[d - 15]
       day_str = str(d)
@@ -45,7 +49,8 @@ class EStaffing:
     self.driver.find_element_by_class_name('largeEvtBtn').click()
 
   def __get_days(self):
-    table = self.driver.find_element_by_name('main4_form').find_element_by_tag_name('table')
+    main4_form = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.NAME, 'main4_form')))
+    table = main4_form.find_element_by_tag_name('table')
     return table.find_elements_by_xpath('./tbody/tr')
 
   def __move_to_half_page(self, half):
