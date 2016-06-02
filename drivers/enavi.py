@@ -25,6 +25,12 @@ class ENavi:
 
     return enavi_list
 
+  def working_hours(self):
+    basic = self.driver.find_element_by_id('LblTimes01').text
+    extra = self.driver.find_element_by_id('LblTimes02').text
+
+    return { 'basic': basic, 'extra': extra }
+
   def __login(self):
     self.driver.get(self.login_url)
 

@@ -8,7 +8,11 @@ config = json.load(open('config.json', 'r'))
 driver = webdriver.Firefox()
 driver.maximize_window()
 
-timesheet = ENavi(driver, config['e-navi']).get_timesheet()
+enavi = ENavi(driver, config['e-navi'])
+timesheet = enavi.get_timesheet()
+enavi_working_hours = enavi.working_hours()
+
 EStaffing(driver, config['e-staffing']).transcribe(timesheet)
 
+print('enavi: ' + str(enavi_working_hours))
 print('completed!')
