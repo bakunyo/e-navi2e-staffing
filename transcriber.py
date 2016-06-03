@@ -12,7 +12,10 @@ enavi = ENavi(driver, config['e-navi'])
 timesheet = enavi.get_timesheet()
 enavi_working_hours = enavi.working_hours()
 
-EStaffing(driver, config['e-staffing']).transcribe(timesheet)
+estaffing = EStaffing(driver, config['e-staffing'])
+estaffing.transcribe(timesheet)
+estaffing_working_hours = estaffing.working_hours()
 
 print('enavi: ' + str(enavi_working_hours))
+print('estaffing: ' + str(estaffing_working_hours))
 print('completed!')

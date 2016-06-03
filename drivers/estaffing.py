@@ -13,6 +13,8 @@ class EStaffing:
     self.half = { 'early': '1', 'late': '2' } # 1: 上旬, 2: 下旬
     self.shift = { 'work': '1', 'absence': '2' } # 1: 出勤, 2: 年休
     self.half_now = ''
+    self.working_hours_basic = { 'early': '', 'late': '' }
+    self.working_hours_extra = { 'early': '', 'late': '' }
 
   def transcribe(self, enavi_timesheet):
     self.__login()
@@ -21,10 +23,11 @@ class EStaffing:
     for dic in enavi_timesheet:
       d = dic['date']
       h = 'early' if d < 16 else 'late'
-    
+
       # 上旬・下旬のページ遷移
       if h != self.half_now:
         self.__move_to_half_page(h)
+        self.__set_working_hours()
 
       days = self.__get_days() # half of month
 
@@ -36,6 +39,13 @@ class EStaffing:
       if status != '': continue
 
       self.__request_approval(day, day_str, dic['time'])
+      self.__set_working_hours()
+
+  def working_hours(self):
+    basic = self.__calc_hours(self.working_hours_basic)
+    extra = self.__calc_hours(self.working_hours_extra)
+
+    return { 'basic': basic, 'extra': extra }
 
   def __login(self):
     self.driver.get(self.login_url)
@@ -49,8 +59,7 @@ class EStaffing:
     self.driver.find_element_by_class_name('largeEvtBtn').click()
 
   def __get_days(self):
-    main4_form = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.NAME, 'main4_form')))
-    table = main4_form.find_element_by_tag_name('table')
+    table = self.driver.find_element_by_name('main4_form').find_element_by_tag_name('table')
     return table.find_elements_by_xpath('./tbody/tr')
 
   def __move_to_half_page(self, half):
@@ -82,3 +91,30 @@ class EStaffing:
     # 申請
     day.find_element_by_class_name('clsDayActBtn').click()
     self.driver.switch_to_alert().accept()
+
+  def __set_working_hours(self):
+    main2_form = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.NAME, 'main2_form')))
+    tr = main2_form.find_element_by_xpath('p/table[1]/tbody/tr[2]')
+    basic = tr.find_element_by_xpath('td[5]').text
+    extra = tr.find_element_by_xpath('td[6]').text
+
+    if self.half_now == 'early':
+      if basic != '_': self.working_hours_basic['early'] = basic
+      if extra != '_': self.working_hours_extra['early'] = extra
+    else:
+      if basic != '_': self.working_hours_basic['late'] = basic
+      if extra != '_': self.working_hours_extra['late'] = extra
+
+  def __calc_hours(self, hours):
+    hour = 0
+    minute = 0
+    for _k, v in hours.items():
+      if v == '': continue
+
+      _h, _m = [int(s) for s in v.split('_')]
+      hour += _h
+      m_sum = minute + _m
+      hour += m_sum // 60
+      minute = m_sum % 60
+
+    return ':'.join(['{0:02d}'.format(s) for s in [hour, minute]])
