@@ -98,12 +98,8 @@ class EStaffing:
     basic = tr.find_element_by_xpath('td[5]').text
     extra = tr.find_element_by_xpath('td[6]').text
 
-    if self.half_now == 'early':
-      if basic != '_': self.working_hours_basic['early'] = basic
-      if extra != '_': self.working_hours_extra['early'] = extra
-    else:
-      if basic != '_': self.working_hours_basic['late'] = basic
-      if extra != '_': self.working_hours_extra['late'] = extra
+    if basic != '_': self.working_hours_basic[self.half_now] = basic
+    if extra != '_': self.working_hours_extra[self.half_now] = extra
 
   def __calc_hours(self, hours):
     hour = 0
