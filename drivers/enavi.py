@@ -28,8 +28,9 @@ class ENavi:
   def working_hours(self):
     basic = self.driver.find_element_by_id('LblTimes01').text
     extra = self.driver.find_element_by_id('LblTimes02').text
+    late_evening = self.driver.find_element_by_id('LblTimes03').text
 
-    return { 'basic': basic, 'extra': extra }
+    return { 'basic': basic, 'extra': extra, 'late_evening': late_evening }
 
   def __login(self):
     self.driver.get(self.login_url)
