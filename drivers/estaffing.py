@@ -69,20 +69,21 @@ class EStaffing:
     self.half_now = half
 
   def __request_approval(self, day, day_str, time):
-    # 開始時刻
-    s_hh, s_mm = time['begin'].split(':')
-    day.find_element_by_name('starthh_text' + day_str).send_keys(s_hh)
-    day.find_element_by_name('startmm_text' + day_str).send_keys(s_mm)
+    if time['attend'] == '出勤':
+      # 開始時刻
+      s_hh, s_mm = time['begin'].split(':')
+      day.find_element_by_name('starthh_text' + day_str).send_keys(s_hh)
+      day.find_element_by_name('startmm_text' + day_str).send_keys(s_mm)
 
-    # 終了時刻
-    e_hh, e_mm = time['end'].split(':')
-    day.find_element_by_name('endhh_text' + day_str).send_keys(e_hh)
-    day.find_element_by_name('endmm_text' + day_str).send_keys(e_mm)
+      # 終了時刻
+      e_hh, e_mm = time['end'].split(':')
+      day.find_element_by_name('endhh_text' + day_str).send_keys(e_hh)
+      day.find_element_by_name('endmm_text' + day_str).send_keys(e_mm)
 
-    # 休憩時間
-    r_hh, r_mm = time['break'].split(':')
-    day.find_element_by_name('resthh_text' + day_str).send_keys(r_hh)
-    day.find_element_by_name('restmm_text' + day_str).send_keys(r_mm)
+      # 休憩時間
+      r_hh, r_mm = time['break'].split(':')
+      day.find_element_by_name('resthh_text' + day_str).send_keys(r_hh)
+      day.find_element_by_name('restmm_text' + day_str).send_keys(r_mm)
 
     # 区分
     attend = 'work' if time['attend'] == '出勤' else 'absence'
