@@ -10,5 +10,9 @@
     "companyId": "COMPANY_ID",
     "userId": "USER_ID",
     "password": "PASSWORD"
+  },
+  "driver": {
+    "browser": "BROWSER",
+    "PATH": "DRIVER_PATH"
   }
 }

@@ -5,7 +5,11 @@ from drivers.estaffing import *
 
 config = json.load(open('config.json', 'r'))
 
-driver = webdriver.Firefox()
+if config['driver']['browser'] == 'chrome':
+  driver = webdriver.Chrome(executable_path=config['driver']['path'])
+else:
+  driver = webdriver.Firefox()
+
 driver.maximize_window()
 
 enavi = ENavi(driver, config['e-navi'])
